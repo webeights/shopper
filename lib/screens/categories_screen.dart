@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopper/providers/products_provider.dart';
-import 'package:shopper/widgets/items_product.dart';
+import 'package:shopper/providers/category_provider.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
@@ -10,38 +9,48 @@ class CategoriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        scrolledUnderElevation: 0,
         title: const Text('Categories'),
       ),
-      body: Center(
-        child: Consumer<ProductsProvider>(
-          builder: (ctx, provider, _) {
-            return FutureBuilder(
-              future: provider.getProductData(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                } else {
-                  final product = snapshot.data!;
-                  return GridView.builder(
-                    itemCount: product.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 2 / 3,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
+      body: Consumer<CategoryProvider>(
+        builder: (context, value, _) => FutureBuilder(
+          future: value.getProductCategories(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            } else {
+              final category = snapshot.data!;
+              return GridView(
+                padding: const EdgeInsets.all(16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 2 / 3,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                ),
+                children: [
+                  ...category.map(
+                    (data) => Card(
+                      clipBehavior: Clip.antiAlias,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                            '/products',
+                            arguments: data,
+                          );
+                        },
+                        child: Center(
+                          child: Text(data.name),
+                        ),
+                      ),
                     ),
-                    itemBuilder: (context, index) =>
-                        ItermsProduct(product[index]),
-                  );
-                }
-              },
-            );
+                  ),
+                ],
+              );
+            }
           },
         ),
       ),

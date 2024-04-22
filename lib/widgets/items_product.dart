@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shopper/models/product.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class ItermsProduct extends StatelessWidget {
-  const ItermsProduct(this.product, {super.key});
+class ItemsProduct extends StatelessWidget {
+  const ItemsProduct(this.product, {super.key});
 
   final Product product;
 
@@ -20,6 +20,8 @@ class ItermsProduct extends StatelessWidget {
                 placeholder: MemoryImage(kTransparentImage),
                 image: NetworkImage(product.image),
                 fit: BoxFit.cover,
+                // color: Colors.transparent,
+                colorBlendMode: BlendMode.color,
               ),
             ),
             Expanded(

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopper/providers/category_provider.dart';
 import 'package:shopper/providers/products_provider.dart';
 import 'package:shopper/screens/categories_screen.dart';
+// import 'package:shopper/screens/categories_screen.dart';
+import 'package:shopper/screens/products_screen.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ProductsProvider()),
+        ChangeNotifierProvider(create: (_) => CategoryProvider())
       ],
       child: const MyApp(),
     ),
@@ -28,6 +32,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const CategoriesScreen(),
+        '/products': (context) => const ProductsScreen(),
       },
     );
   }
