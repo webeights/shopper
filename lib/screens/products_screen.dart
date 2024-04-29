@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopper/models/product.dart';
-import 'package:shopper/providers/category_provider.dart';
+import 'package:shopper/models/category.dart';
 import 'package:shopper/providers/products_provider.dart';
 import 'package:shopper/widgets/items_product.dart';
 
 class ProductsScreen extends StatelessWidget {
   const ProductsScreen({super.key});
 
+  static const routeName = '/products_screen';
+
   @override
   Widget build(BuildContext context) {
-    final category = Provider.of<CategoryProvider>(context).categories;
+    var routeArgs = ModalRoute.of(context)!.settings.arguments as Category;
+    final category = routeArgs.name;
+
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -29,19 +32,14 @@ class ProductsScreen extends StatelessWidget {
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 } else {
-                  List<Product> filteredProds = [];
-                  final product = snapshot.data!;
+                  final prods = snapshot.data;
 
-                  for (var cats in category) {
-                    filteredProds = product
-                        .where((prods) => prods.category.contains(cats.name))
-                        .toList();
-                    print(cats.name);
-                  }
-
+                  final filteredProducts = prods!
+                      .where((prod) => prod.category.contains(category))
+                      .toList();
                   return GridView.builder(
                     padding: const EdgeInsets.all(16),
-                    itemCount: filteredProds.length,
+                    itemCount: filteredProducts.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -50,7 +48,7 @@ class ProductsScreen extends StatelessWidget {
                       crossAxisSpacing: 16,
                     ),
                     itemBuilder: (context, index) {
-                      return ItemsProduct(filteredProds[index]);
+                      return ItemsProduct(filteredProducts[index]);
                     },
                   );
                 }

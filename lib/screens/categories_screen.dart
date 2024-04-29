@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopper/models/category.dart';
 import 'package:shopper/providers/category_provider.dart';
+import 'package:shopper/screens/products_screen.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
+
+  static const routeName = '/categories_screen';
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +42,10 @@ class CategoriesScreen extends StatelessWidget {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).pushNamed(
-                            '/products',
-                            arguments: data,
+                            ProductsScreen.routeName,
+                            arguments: Category(name: data.name),
                           );
+                          print(data.name);
                         },
                         child: Center(
                           child: Text(data.name),

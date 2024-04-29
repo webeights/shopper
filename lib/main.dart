@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:shopper/providers/category_provider.dart';
 import 'package:shopper/providers/products_provider.dart';
 import 'package:shopper/screens/categories_screen.dart';
-// import 'package:shopper/screens/categories_screen.dart';
 import 'package:shopper/screens/products_screen.dart';
 
 void main() {
@@ -29,10 +28,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: '/',
+      initialRoute: CategoriesScreen.routeName,
       routes: {
-        '/': (context) => const CategoriesScreen(),
-        '/products': (context) => const ProductsScreen(),
+        CategoriesScreen.routeName: (context) => const CategoriesScreen(),
+        ProductsScreen.routeName: (context) => const ProductsScreen(),
       },
     );
   }
